@@ -1,4 +1,4 @@
-pub mod backend_connector;
+
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
@@ -6,7 +6,6 @@ pub fn add(left: usize, right: usize) -> usize {
 #[cfg(test)]
 mod tests {
     use crate::add;
-    use crate::backend_connector::backend::Backend;
 
     #[test]
     fn it_works() {
