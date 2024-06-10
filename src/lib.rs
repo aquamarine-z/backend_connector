@@ -1,4 +1,5 @@
-
+pub mod backend;
+pub mod backend_pool;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
@@ -6,6 +7,7 @@ pub fn add(left: usize, right: usize) -> usize {
 #[cfg(test)]
 mod tests {
     use crate::add;
+    use crate::backend::Backend;
 
     #[test]
     fn it_works() {

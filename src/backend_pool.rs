@@ -1,5 +1,4 @@
-use crate::backend_connector::backend::Backend;
-
+use crate::backend::Backend;
 pub struct BackendPool{
     backends:Vec<Backend>,
     current_index:i32,
