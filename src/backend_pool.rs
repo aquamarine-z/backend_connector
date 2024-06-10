@@ -27,7 +27,8 @@ impl BackendPool{
 #[cfg(test)]
 mod tests {
     use crate::add;
-    use crate::backend_connector::backend::Backend;
+    use crate::backend::Backend;
+
 
     #[test]
     fn it_works() {
