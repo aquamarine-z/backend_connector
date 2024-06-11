@@ -5,19 +5,23 @@ use crate::port::find_available_port;
 
 struct BackendInformation {
     backend: Box<dyn Backend>,
+    running_port:u16,
+    is_running: bool,
 
 }
 
 pub struct BackendPool {
     backends: Vec<Box<dyn Backend>>,
+    information: Vec<BackendInformation>,
     current_index: i32,
-    check_duration: Duration,
+    pub check_duration: Duration,
 }
 
 impl BackendPool {
     pub fn new() -> BackendPool {
         return BackendPool {
             backends: Vec::new(),
+            information: Vec::new(),
             current_index: 0,
             check_duration: Duration::from_millis(500),
         };
@@ -25,21 +29,13 @@ impl BackendPool {
     pub fn add_backend(&mut self, backend: Box<dyn Backend>) {
         self.backends.push(backend);
     }
-    pub fn get_backend_at(&self, index: i32) -> Option<&Box<dyn Backend>> {
+    pub fn get_backend_at(self, index: i32) -> Option<&dyn Backend> {
         return if index < 0 || index >= self.backends.len() as i32 {
             Option::None
         } else {
-            Option::Some(&self.backends[index as usize])
+            Option::Some(self.backends[index as usize].as_ref())
         };
     }
-    /*pub fn get_backend_at(& self, index:i32)->Option<Box<dyn Backend>>{
-        return if index < 0 || index >= self.backends.len() as i32 {
-            None
-        } else {
-            Some(self.backends[index as usize].clone())
-        }
-    }*/
-
     pub fn start_listening(&mut self) {
         loop {
             println!("1111");
@@ -48,6 +44,7 @@ impl BackendPool {
                 if backend.is_random_port() {
                     let available_port = find_available_port();
                     println!("server is starting on {}", available_port);
+
                 }
                 backend.get_start_command(1);
             }
@@ -65,17 +62,10 @@ mod tests_backend_pool {
 
     #[test]
     fn it_works() {
-        println!("111");
-        let python_backend = PythonBackend {
-            python_path: "".to_string(),
-            python_main_path: "".to_string(),
-            random_port: true,
-            default_port: 8080,
-
-        };
-        let mut pool = BackendPool::new();
-        pool.check_duration = Duration::from_millis(1);
-        pool.add_backend(Box::new(python_backend));
-        pool.start_listening();
+        let mut backend=PythonBackend::new(
+            "Z:\\Programming\\Runtime Environments\\Python-3.9.13I\\python.exe".to_string(),
+            "Z:\\Programming\\Projects\\Python Projects\\Scripts\\backend_test.py".to_string(),
+        );
+        backend.starter.start_backend(8080);
     }
 }

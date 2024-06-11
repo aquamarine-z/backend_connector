@@ -2,6 +2,7 @@ pub mod backend;
 pub mod backend_pool;
 
 pub mod port;
+pub mod backend_starter;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
